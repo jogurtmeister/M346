@@ -1,0 +1,64 @@
+#cloud-config
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    home: /home/ubuntu
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOAqkvNWcdUIx2kNhrDLDB7/w47RYC02W5QcSLvHwEGYduetmhy+Rzbl4gjetG6kF6OfSkbmS8/iHPPeWtT7zD6ZXxjFAedwY0ubYoqvchulKAXPYzxFAEFBvAD1D2L2RlFwT+SHy+3VYSbET0ZuP3yVjtBueL/3uqjqzniD0GHzR0cG3qQABHmqf752q1XqsX0t0Ra04l3hqm/wrTLypAHl5kzhmbCBSXK4OjuXx75+iNg9WInTnA2YqDldf+AAVZfGXtU6+YdqCW1Fqb3VB9PaVWW1aa2TBdKZj/dqiEaU38RX1PdaI00gRyva6IvKXbDdPLJI6QiDdqAZ80fDVX
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDT+7GJtX+CrjK8wpAKWrddHlEGI7dYL9x/opjyhuexzOVJOOzJgCv5+QIACSdHUDCrdDsIdE9sj9JqvjhBouSCKBG1CeRkOwWCyR/xFq2E0t8XPsHPxkSVI4PdwQFbjnmeBindz/wQtSr6SuoZAn7LaKp6qj0ZRn+DGy5c60SmWDOXRVjLeDA+HU4Byvdtn+tyzJM4ADyng4e6lg3MaYzXk2ZBCDu7sF+HL/DucVsv+T7GXLyPX1k1xzFYEOiMBLAYvBhRZ7KaeSH7Uo1XnPAivwBF6+mirsF9M05LU3Sn2MP2d1ddXNmbZcZcBYgGSMwLKsY6+sT/pMAJq4Hkmug1
+ 
+ssh_pwauth: false
+disable_root: true
+package_update: true
+packages:
+  - apache2
+  - php
+  - libapache2-mod-php
+  - php-mysql
+  - adminer
+ 
+write_files:
+  - path: /var/www/html/index.html
+    content: |
+      <h1>Hallo von meinem Webserver</h1>
+ 
+  - path: /var/www/html/info.php
+    content: |
+      <?php phpinfo(); ?>
+ 
+  - path: /var/www/html/db.php
+    content: |
+      <html>
+        <head></head>
+        <body>
+        Diese Seite macht eine Abfrage auf die Datenbank. <br />
+        Das ausgeführte Query ist: <i>select Host, User from mysql.user;</i><br /><br />
+        Das Resultat: <br />
+        <?php
+                //database
+                $servername = "172.31.17.142";
+                $username = "admin";
+                $password = "password";
+                $dbname = "mysql";
+
+                // Create connection
+                $conn = new mysqli($servername, $username, $password, $dbname);
+                // Check connection
+                if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                }
+
+                $sql = "select Host, User from mysql.user;";
+                $result = $conn->query($sql);
+                while($row = $result->fetch_assoc()){
+                        echo("<li>" . $row["Host"] . " / " . $row["User"] . "</li>");
+                }
+                //var_dump($result);
+        ?>
+        
+        </body>
+        </html>
+
+ 
