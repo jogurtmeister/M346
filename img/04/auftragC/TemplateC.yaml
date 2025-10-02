@@ -1,0 +1,17 @@
+#cloud-config
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    home: /home/ubuntu
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOAqkvNWcdUIx2kNhrDLDB7/w47RYC02W5QcSLvHwEGYduetmhy+Rzbl4gjetG6kF6OfSkbmS8/iHPPeWtT7zD6ZXxjFAedwY0ubYoqvchulKAXPYzxFAEFBvAD1D2L2RlFwT+SHy+3VYSbET0ZuP3yVjtBueL/3uqjqzniD0GHzR0cG3qQABHmqf752q1XqsX0t0Ra04l3hqm/wrTLypAHl5kzhmbCBSXK4OjuXx75+iNg9WInTnA2YqDldf+AAVZfGXtU6+YdqCW1Fqb3VB9PaVWW1aa2TBdKZj/dqiEaU38RX1PdaI00gRyva6IvKXbDdPLJI6QiDdqAZ80fDVX
+      - "Lehrer Key"
+
+ssh_pwauth: false
+disable_root: false
+package_update: true
+packages:
+  - curl
+  - wget
