@@ -24,9 +24,7 @@ write_files:
     content: |
       <h1>Hallo von meinem Webserver</h1>
  
-  - path: /var/www/html/info.php
-    content: |
-      <?php phpinfo(); ?>
+  - path: /var/www/ht6
  
   - path: /var/www/html/db.php
     content: |
